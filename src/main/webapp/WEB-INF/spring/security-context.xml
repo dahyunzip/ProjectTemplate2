@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+		 xmlns:security="http://www.springframework.org/schema/security"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/security https://www.springframework.org/schema/security/spring-security.xsd">
+	<!-- security-context.xml -->
+	
+	<!-- 외부 객체(빈)등록 -->
+	<bean id="customAccessDenied" class="com.itwillbs.security.CustomAccessDeniedHandler" />
+	
+	<!-- 로그인 성공하는 경우 처리하는 객체 -->
+    <bean id="customLoginSuccess" class="com.itwillbs.security.CustomLoginSuccessHandler"/>
+	
+	<!-- 비밀번호 암호화를 처리하기 위한 객체 -->
+	<bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+	
+	<!-- spring web security 전반적인 설정 -->
+	<security:http auto-config="true">
+       <!-- 공개 리소스 / 비로그인 포함 모두 허용 -->
+	    <security:intercept-url pattern="/login" access="permitAll"/>
+	    <security:intercept-url pattern="/signup" access="permitAll"/>
+	    <security:intercept-url pattern="/posts" access="permitAll"/>
+	    <security:intercept-url pattern="/posts/view/**" access="permitAll"/>
+	    <security:intercept-url pattern="/resources/**" access="permitAll"/> <!-- static 리소스 등 -->
+	    
+	    <!-- ADMIN 전용 -->
+	    <security:intercept-url pattern="/admin/**" access="ROLE_ADMIN" />
+	    <security:intercept-url pattern="/posts/new" access="ROLE_ADMIN" />
+	    <security:intercept-url pattern="/posts/edit/**" access="ROLE_ADMIN" />
+	    <security:intercept-url pattern="/posts/delete/**" access="ROLE_ADMIN" />
+	    
+       <!-- 그 외 요청은 인증된 사용자만 -->
+	    <security:intercept-url pattern="/**" access="isAuthenticated()" />
+	
+	    <security:form-login login-page="/login" login-processing-url="/login" default-target-url="/" authentication-success-handler-ref="customLoginSuccess" />
+	    <security:logout logout-success-url="/" invalidate-session="true" />
+	
+	    <security:access-denied-handler ref="customAccessDenied"/>
+    </security:http>
+
+	<!-- spring web security 인증관련 설정 -->
+    <security:authentication-manager>
+        <security:authentication-provider>
+            <!-- 경비 업체 -->
+           <security:jdbc-user-service data-source-ref="dataSource"
+	        users-by-username-query="SELECT username, password, enabled FROM users WHERE username = ?"
+	        authorities-by-username-query="SELECT username, authority FROM authorities WHERE username = ?"/>
+    		<security:password-encoder ref="bCryptPasswordEncoder"/>
+            
+            <!-- 임시 암호화 처리 설정 -->
+            <security:password-encoder ref="bCryptPasswordEncoder"/>
+            
+        </security:authentication-provider>
+        
+    </security:authentication-manager>
+</beans>

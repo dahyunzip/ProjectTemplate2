@@ -9,23 +9,16 @@
 		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	
-	<!-- Root Context: defines shared resources visible to all other web components -->
-	<!-- hikariConfig : 디비 연결 정보(CP)-->
-	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
-		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
-		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://localhost:3306/springdb"/>
+	<!-- dataSource : 디비 연결정보 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/springdb"/>
 		<property name="username" value="root"/>
 		<property name="password" value="1234"/>
 	</bean>
-	<!-- hikariConfig : 디비 연결 정보(CP)-->
+	<!-- dataSource : 디비 연결정보 -->
 	
-	<!-- dataSource : 디비 연결정보 (hikari CP설정), 자원해제 -->
-	<bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
-		<constructor-arg ref="hikariConfig"/>
-	</bean>
-	<!-- dataSource : 디비 연결정보 (hikari CP설정), 자원해제 -->
-
-	<!-- sqlSessionFactory : 디비연결, 자원해제, SQL 구문 실행, mybatis 설정, mapper 설정-->
+	<!-- sqlSessionFactory : 디비연결, 자원해제, SQL 구문 실행, mybatis 설정, mapper 설정 -->
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:/mybatis-config.xml"/>
@@ -38,9 +31,5 @@
 		destroy-method="clearCache">
 		<constructor-arg ref="sqlSessionFactory"/>
 	</bean>	
-	<!-- sqlSession : 디비연결(자동), 자원해제(자동), SQL 구문 실행, mybatis 설정, mapper 설정,  -->	
-	
-	<!-- 객체를 찾기(외부에서 선언된 @Repository, @Service가 붙어 있는 객체) -->
-	<context:component-scan base-package="com.itwillbs.persistence"/>
-	<context:component-scan base-package="com.itwillbs.service"/>
+	<!-- sqlSession : 디비연결(자동), 자원해제(자동), SQL 구문 실행, mybatis 설정, mapper 설정,  -->
 </beans>
