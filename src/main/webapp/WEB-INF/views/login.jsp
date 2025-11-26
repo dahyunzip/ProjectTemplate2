@@ -11,7 +11,6 @@
 
     <!-- Spring Security form-login 기본 URL이 /login 이므로 action "/login" -->
     <form action="${pageContext.request.contextPath}/login" method="post">
-        <!-- 만약 CSRF 설정이 있다면 아래처럼 hidden input 필요할 수도 있어요 -->
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
         <div>
@@ -25,20 +24,22 @@
         <div>
             <input type="submit" value="로그인" />
         </div>
-
+        
         <!-- 로그인 실패 시 보여줄 수 있도록 error 파라미터 확인 -->
-        <c:if test="${param.error != null}">
-            <div style="color:red;">
+		<c:if test="${param.error != null}">
+			<div style="color:red;">
                 로그인에 실패했습니다. 아이디 또는 비밀번호를 확인하세요.
             </div>
-        </c:if>
+		</c:if>
 
         <!-- 로그아웃 후 /login?logout 에 리다이렉트되면 메시지 -->
         <c:if test="${param.logout != null}">
-            <div style="color:green;">
+        	<div style="color:green;">
                 로그아웃 되었습니다.
             </div>
         </c:if>
     </form>
+    <hr>
+    <input type="button" onclick="location.href='/signup'" value="회원가입">
 </body>
 </html>
