@@ -36,4 +36,16 @@ public class MemberDAOImpl implements MemberDAO {
 		return sqlSession.selectOne(NAMESPACE + "selectByUsername", username);
 	}
 
+	@Override
+	public void updateMemberInfo(MemberVO vo) throws Exception {
+		sqlSession.update(NAMESPACE+"updateMemberInfo", vo);
+	}
+
+	@Override
+	public void updateEnabled(String username, int enabled) throws Exception {
+		sqlSession.update(NAMESPACE + "updateEnabled", 
+				Map.of("username", username, "enabled", enabled));
+	}
+	
+	
 }

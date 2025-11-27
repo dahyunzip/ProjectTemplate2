@@ -34,7 +34,8 @@ public class CustomUserDetails implements UserDetails{
     public Date getBirthdate() {
         return member.getBirthdate();
     }
-	
+    
+    
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return member.getAuthorities();
@@ -73,7 +74,7 @@ public class CustomUserDetails implements UserDetails{
 	@Override
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
-		return member.isEnabled();
+		return member.getEnabled() == 1;
 	}
 	
 }

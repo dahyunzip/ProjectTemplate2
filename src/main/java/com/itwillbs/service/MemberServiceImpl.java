@@ -31,5 +31,22 @@ public class MemberServiceImpl implements MemberService{
 	public boolean isUsernameExists(String username) {
 		return mDao.findByUsername(username) != null;
 	}
+
+	@Override
+	public void updateMemberInfo(MemberVO vo) throws Exception {
+		mDao.updateMemberInfo(vo);
+	}
+
+	@Override
+	public MemberVO getMemberByUsername(String username) throws Exception {
+		return mDao.findByUsername(username);
+	}
+
+	@Override
+	public void disableMember(String username, int enabled) throws Exception {
+		mDao.updateEnabled(username, 0);
+	}
+	
+	
 	
 }

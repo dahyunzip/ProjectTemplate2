@@ -19,4 +19,18 @@
 		FROM users
 		WHERE username = #{username}
 	</select>
+	
+	<update id="updateMemberInfo">
+		UPDATE users
+		SET
+			nickname = #{nickname},
+			address = #{address}
+		WHERE username = #{username}
+	</update>
+	
+	<update id="updateEnabled">
+		UPDATE users
+		SET enabled = #{enabled}
+		WHERE username = #{username}
+	</update>
 </mapper>

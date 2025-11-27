@@ -25,5 +25,6 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
         <input type="submit" value="로그아웃" />
     </form>
+    <input type="button" value="마이페이지" onclick="location.href='/mypage'" />
 </body>
 </html>

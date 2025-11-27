@@ -11,7 +11,7 @@ import lombok.Data;
 public class MemberVO {
 	private String username;
 	private String password;
-	private boolean enabled;
+	private int enabled;
 	
 	private String nickname;
 	private String address;

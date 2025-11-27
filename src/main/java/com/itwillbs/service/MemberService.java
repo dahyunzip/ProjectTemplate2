@@ -8,4 +8,13 @@ public interface MemberService {
 	
 	// username 중복 체크
 	public boolean isUsernameExists(String username);
+	
+	// 회원정보 수정
+	public void updateMemberInfo(MemberVO vo) throws Exception;
+	
+	// username으로 정보 ㄱ가져오기
+	public MemberVO getMemberByUsername(String username) throws Exception;
+	
+	// 소프트 딜리트
+	public void disableMember(String username, int enabled) throws Exception;
 }
